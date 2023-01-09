@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>645</width>
-    <height>358</height>
+    <width>652</width>
+    <height>341</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -795,6 +795,12 @@
        <height>251</height>
       </rect>
      </property>
+     <property name="alternatingRowColors">
+      <bool>true</bool>
+     </property>
+     <property name="movement">
+      <enum>QListView::Snap</enum>
+     </property>
     </widget>
    </widget>
    <widget class="QPushButton" name="resumePauseButton">
@@ -842,12 +848,24 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>645</width>
+     <width>652</width>
      <height>26</height>
     </rect>
    </property>
+   <widget class="QMenu" name="File">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionOpen_ROM"/>
+   </widget>
+   <addaction name="File"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionOpen_ROM">
+   <property name="text">
+    <string>Open ROM</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

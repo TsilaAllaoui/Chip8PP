@@ -10,11 +10,13 @@
 #define UI_MAINWINDOW_H
 
 #include <QtCore/QVariant>
+#include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QFrame>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QListWidget>
 #include <QtWidgets/QMainWindow>
+#include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QStatusBar>
@@ -25,6 +27,7 @@ QT_BEGIN_NAMESPACE
 class Ui_MainWindow
 {
 public:
+    QAction *actionOpen_ROM;
     QWidget *centralwidget;
     QFrame *attributesFrame;
     QLabel *SP_label_2;
@@ -75,13 +78,16 @@ public:
     QPushButton *resetButton;
     QPushButton *stepButton;
     QMenuBar *menubar;
+    QMenu *File;
     QStatusBar *statusbar;
 
     void setupUi(QMainWindow *MainWindow)
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
-        MainWindow->resize(645, 358);
+        MainWindow->resize(652, 341);
+        actionOpen_ROM = new QAction(MainWindow);
+        actionOpen_ROM->setObjectName(QString::fromUtf8("actionOpen_ROM"));
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
         attributesFrame = new QFrame(centralwidget);
@@ -288,6 +294,8 @@ public:
         disassemblerList = new QListWidget(disassemblerFrame);
         disassemblerList->setObjectName(QString::fromUtf8("disassemblerList"));
         disassemblerList->setGeometry(QRect(0, 0, 431, 251));
+        disassemblerList->setAlternatingRowColors(true);
+        disassemblerList->setMovement(QListView::Snap);
         resumePauseButton = new QPushButton(centralwidget);
         resumePauseButton->setObjectName(QString::fromUtf8("resumePauseButton"));
         resumePauseButton->setGeometry(QRect(10, 270, 50, 25));
@@ -300,11 +308,16 @@ public:
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
-        menubar->setGeometry(QRect(0, 0, 645, 26));
+        menubar->setGeometry(QRect(0, 0, 652, 26));
+        File = new QMenu(menubar);
+        File->setObjectName(QString::fromUtf8("File"));
         MainWindow->setMenuBar(menubar);
         statusbar = new QStatusBar(MainWindow);
         statusbar->setObjectName(QString::fromUtf8("statusbar"));
         MainWindow->setStatusBar(statusbar);
+
+        menubar->addAction(File->menuAction());
+        File->addAction(actionOpen_ROM);
 
         retranslateUi(MainWindow);
 
@@ -314,6 +327,7 @@ public:
     void retranslateUi(QMainWindow *MainWindow)
     {
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", nullptr));
+        actionOpen_ROM->setText(QApplication::translate("MainWindow", "Open ROM", nullptr));
         SP_label_2->setText(QApplication::translate("MainWindow", "ST", nullptr));
         I->setText(QApplication::translate("MainWindow", "TextLabel", nullptr));
         V2->setText(QApplication::translate("MainWindow", "V0", nullptr));
@@ -359,6 +373,7 @@ public:
         resumePauseButton->setText(QApplication::translate("MainWindow", "PAUSE", nullptr));
         resetButton->setText(QApplication::translate("MainWindow", "RESET", nullptr));
         stepButton->setText(QApplication::translate("MainWindow", "STEP", nullptr));
+        File->setTitle(QApplication::translate("MainWindow", "File", nullptr));
     } // retranslateUi
 
 };

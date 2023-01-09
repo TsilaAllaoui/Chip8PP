@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include "disassembler.h"
 
 // The CPU class of the Chip8
 class Cpu
@@ -53,6 +54,9 @@ class Cpu
 		// CPU State
 		static STATE state;
 
+		// Chip8 disassembler
+		Chip8Disassembler *disassembler;
+
 		// Getters
 		uint16_t getPC();
 		uint16_t getSP();
@@ -60,6 +64,7 @@ class Cpu
 		uint16_t getDT();
 		uint16_t getST();
 		uint8_t* getRegisters();
+		std::vector<std::string> getMnemonics();
 
 		// Start the CPU
 	    void run();

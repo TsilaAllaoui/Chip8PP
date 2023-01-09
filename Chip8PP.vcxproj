@@ -117,7 +117,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>C:\Qt\5.12.11\5.12.11\msvc2017_64\lib\Qt5Widgetsd.lib;C:\Qt\5.12.11\5.12.11\msvc2017_64\lib\Qt5Guid.lib;C:\Qt\5.12.11\5.12.11\msvc2017_64\lib\Qt5Cored.lib;C:\Qt\5.12.11\5.12.11\msvc2017_64\lib\qtmaind.lib;shell32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\openssl\lib;C:\Utils\my_sql\mysql-5.6.11-winx64\lib;C:\Utils\postgresql\pgsql\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Qt\5.12.11\5.12.11\winrt_armv7_msvc2017\lib;C:\openssl\lib;C:\Utils\my_sql\mysql-5.6.11-winx64\lib;C:\Utils\postgresql\pgsql\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>"/MANIFESTDEPENDENCY:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' publicKeyToken='6595b64144ccf1df' language='*' processorArchitecture='*'" %(AdditionalOptions)</AdditionalOptions>
       <DataExecutionPrevention>true</DataExecutionPrevention>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -137,9 +137,11 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="disassembler.cpp" />
     <ClCompile Include="mainwindow.cpp" />
     <ClCompile Include="Source Files\cpu.cpp" />
     <ClCompile Include="Source Files\main.cpp" />
+    <ClCompile Include="utilities.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="mainwindow.h">
@@ -160,6 +162,8 @@
     <ClCompile Include="release\moc_mainwindow.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClInclude Include="disassembler.h" />
+    <ClInclude Include="utilities.h" />
     <CustomBuild Include="debug\moc_predefs.h.cbt">
       <FileType>Document</FileType>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>

@@ -1,7 +1,7 @@
+#include <QApplication>
 #include <iostream>
 #include <fstream>
 #include <ctime>
-#include <QApplication>
 
 #include "cpu.h"
 
@@ -106,6 +106,11 @@ std::uint8_t* Cpu::getRegisters()
 	return Registers;
 }
 
+std::vector<std::string> Cpu::getMnemonics()
+{
+	return disassembler->mnemonics;
+}
+
 void Cpu::loadRom(std::string filePath)
 {
 	// Opening file
@@ -126,6 +131,11 @@ void Cpu::loadRom(std::string filePath)
 
 		// Closing file
 		Rom.close();
+
+		// Mnemonics
+		std::vector<uint8_t> tmpBuff(buff, buff + romFileSize);
+		disassembler = new Chip8Disassembler(tmpBuff);
+		disassembler->disassemble();
 
 		// Loading Rom to memory
 		for (int i = 0; i <= romFileSize; i++)
