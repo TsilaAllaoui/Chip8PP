@@ -4,8 +4,9 @@
 
 #include <QFileDialog>
 #include <QPainter>
+#include <QGraphicsScene>
 
-QImage* MainWindow::img = new QImage;
+QImage MainWindow::img;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -65,15 +66,13 @@ MainWindow::MainWindow(QWidget *parent)
 
 	// GRAPHICS
 
-	img = new QImage(256, 128, QImage::Format::Format_RGB888);
+	img = QImage(64*4, 32*4, QImage::Format::Format_RGB888);
 
-	for (int i = 0; i < 256; i++)
-		for (int j = 0; j < 128; j++)
-			img->setPixelColor(i, j, QColor(255,0,0));
+	for (int i = 0; i < 64*4; i++)
+		for (int j = 0; j < 32*4; j++)
+			img.setPixelColor(i, j, QColor(0,0,0));
 
 	view = ui->view;
-	pix = QPixmap::fromImage(*img);
-	view->setPixmap(pix);
 }
 
 MainWindow::~MainWindow()
@@ -278,6 +277,13 @@ void MainWindow::on_disassemblerList_itemDoubleClicked(QListWidgetItem *item)
 
 void MainWindow::paintEvent(QPaintEvent * event)
 {
-	pix = QPixmap::fromImage(*img);
+	QImage img2 = QImage(256, 128, QImage::Format::Format_RGB888);
+	//img2 = img;
+	for (int i = 0; i < 256; i++)
+		for (int j = 0; j < 128; j++)
+		{
+			img2.setPixelColor(i, j, img.pixelColor(i / 4, j / 4));
+		}
+	pix = pix.fromImage(img2);
 	view->setPixmap(pix);
 }

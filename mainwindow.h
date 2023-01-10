@@ -6,6 +6,7 @@
 #include <QListWidget>
 #include <QPushButton>
 #include <QPropertyAnimation>
+#include <QGraphicsView>
 #include "cpu.h"
 
 QT_BEGIN_NAMESPACE
@@ -46,7 +47,7 @@ class MainWindow : public QMainWindow
 		QAction* openFileAction;
 
 		// For drawing
-		static QImage *img;
+		static QImage img;
 		QPixmap pix;
 		QLabel* view;
 

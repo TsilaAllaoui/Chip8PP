@@ -321,6 +321,7 @@ public:
         view = new QLabel(centralwidget);
         view->setObjectName(QString::fromUtf8("view"));
         view->setGeometry(QRect(10, 10, 256, 128));
+        view->setScaledContents(true);
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
