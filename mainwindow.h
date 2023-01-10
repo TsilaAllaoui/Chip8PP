@@ -33,6 +33,7 @@ class MainWindow : public QMainWindow
 
 		// Disassembler
 		QListWidget* opcodes;
+		QListWidget* breakpointsList;
 
 		// State buttons
 		QPushButton* resumePauseButton;
@@ -56,6 +57,12 @@ class MainWindow : public QMainWindow
 		// State of the emulator
 		STATE state;
 
+		// Breakpoints
+		std::vector<uint16_t> breakpoints;
+
+		// Is the CPU is in a breakpoint
+		bool isInBreakPoint;
+
 	public slots:
 
 		// For resuming/pausing CPU
@@ -70,22 +77,8 @@ class MainWindow : public QMainWindow
 		// Choose and load a rom File
 		void on_actionOpen_ROM_triggered();
 
-		void on_disassemblerList_currentRowChanged(int currentRow)
-		{
-			// Get the current and previous items
-			QListWidgetItem *currentItem = opcodes->item(currentRow);
-			QListWidgetItem *previousItem = opcodes->item(currentRow - 1);
-
-			// Animate the transition between the two items
-			if (currentItem && previousItem) {
-				QPropertyAnimation *animation = new QPropertyAnimation((QObject*)currentItem, QByteArray("background-color"));
-				animation->setDuration(200);
-				animation->setStartValue(QColor(Qt::white));
-				animation->setEndValue(QColor(Qt::blue));
-				animation->start(QAbstractAnimation::DeleteWhenStopped);
-			}
-		}
-
+		// Add breakpoint
+		void on_disassemblerList_itemDoubleClicked(QListWidgetItem *item);
 
 	private:
 		Ui::MainWindow *ui;

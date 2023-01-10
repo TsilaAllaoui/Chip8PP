@@ -4,8 +4,6 @@
 
 #include <QFileDialog>
 
-uint16_t prevPC = 0;
-long _i = 0;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -16,6 +14,7 @@ MainWindow::MainWindow(QWidget *parent)
 	// Set the state of the emulator
 	running = false;
 	state = STATE::STOPPED;
+	isInBreakPoint = false;
 
 	// Instance of the CPU
 	chip8Cpu = new Cpu();
@@ -45,7 +44,10 @@ MainWindow::MainWindow(QWidget *parent)
 
 	// Setting up disassembler widgets
 	opcodes = ui->disassemblerList;
-	opcodes->setStyleSheet("QListWidget::item::selected {background: blue; color: white; transition: background 300ms;}");
+	opcodes->setStyleSheet("QListWidget::item::selected {background: blue; color: white;}");
+
+	// Setting up breakpoints widgets
+	breakpointsList = ui->breakpointsList;
 
 
 	// Setting up buttons
@@ -77,8 +79,14 @@ void MainWindow::on_resumePauseButton_clicked()
 		}
 
 		// If the CPU is paused, then resume it
-		else if (Cpu::state == Cpu::STATE::PAUSED || Cpu::state == Cpu::STATE::STEP)
+		else if (Cpu::state == Cpu::STATE::PAUSED || Cpu::state == Cpu::STATE::STEP )
 		{
+			if (isInBreakPoint == true)
+			{
+				isInBreakPoint = false;
+				chip8Cpu->step();
+			}
+
 			Cpu::state = Cpu::STATE::RUNNING;
 			resumePauseButton->setText(QString("PAUSE"));
 		}
@@ -136,17 +144,25 @@ void MainWindow::updateUI()
 	if (state != STATE::STOPPED)
 	{
 		auto mnemonics = chip8Cpu->getMnemonics();
-		for (int i=0; i<mnemonics.size(); i++)
+		for (int i = 0; i < mnemonics.size(); i++)
 		{
 			if (mnemonics[i].find(getAsQStringHex(chip8Cpu->getPC()).toStdString()) != mnemonics[i].npos)
 			{
 				opcodes->setCurrentRow(i);
+				opcodes->currentItem()->setBackgroundColor(QColor(0, 0, 255));
 				break;
 			}
 		}
+
+		// for the color of the current index
+		auto it = std::find(breakpoints.begin(), breakpoints.end(), chip8Cpu->getPC());
+		if (it != breakpoints.end())
+			opcodes->currentItem()->setBackgroundColor(QColor(255, 0, 0));
+		else opcodes->currentItem()->setBackgroundColor(QApplication::palette().color(QPalette::Base));
 	}
 	else opcodes->setCurrentRow(-1);
 
+	
 }
 
 void MainWindow::update()
@@ -154,9 +170,24 @@ void MainWindow::update()
 	// Prevent the UI to be unresponsive
 	QApplication::instance()->processEvents();
 
+	// If the current PC is at a breakpoint
+	auto it = std::find(breakpoints.begin(), breakpoints.end(), chip8Cpu->getPC());
+	if (it != breakpoints.end())
+	{
+		isInBreakPoint = true;
+		Cpu::state = Cpu::STATE::STEP;
+		resumePauseButton->setText(QString("RESUME"));
+
+		//opcodes->currentItem()->setBackgroundColor(QApplication::palette().color(QPalette::Base));
+
+		updateUI();
+	}
+
 	//If the CPU is running, fo a CPU step
 	if (Cpu::state == Cpu::STATE::RUNNING)
+	{
 		chip8Cpu->step();
+	}
 
 	// Update the UI
 	updateUI();
@@ -166,7 +197,6 @@ void MainWindow::emulate()
 {
 	while (state == STATE::RUNNING)
 	{
-		prevPC = chip8Cpu->getPC();
 		update();
 	}
 }
@@ -197,4 +227,36 @@ void MainWindow::on_actionOpen_ROM_triggered()
 		// Emulate the Chip8
 		emulate();
 	}
+}
+
+void MainWindow::on_disassemblerList_itemDoubleClicked(QListWidgetItem *item)
+{
+	// The current hex index of the item
+	uint16_t hex = QStringtoHex(item->text());
+
+	// Erasing if already in list
+	for (long i=0; i<breakpoints.size(); i++)
+	{
+		if (breakpoints[i] == hex)
+		{
+			 breakpoints.erase(breakpoints.begin() + i);
+
+			 // Readding all items then sorting
+			 breakpointsList->clear();
+			 for (auto &j : breakpoints)
+				 breakpointsList->addItem(getAsQStringHex(j));
+			 breakpointsList->sortItems(Qt::AscendingOrder);
+
+			 item->setBackgroundColor(QApplication::palette().color(QPalette::Base));
+			 return;
+		}
+	}
+
+	// If not in list, add and change color
+	item->setBackgroundColor(QColor(255, 0, 0));
+	breakpoints.emplace_back(hex);
+
+	// Add to breakpoints and sort
+	breakpointsList->addItem(getAsQStringHex(QStringtoHex(item->text())));
+	breakpointsList->sortItems(Qt::AscendingOrder);
 }
