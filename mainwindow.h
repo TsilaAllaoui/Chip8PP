@@ -45,6 +45,12 @@ class MainWindow : public QMainWindow
 		// Menu
 		QAction* openFileAction;
 
+		// For drawing
+		static QImage *img;
+		QPixmap pix;
+		QLabel* view;
+
+
 		// Updating UI
 		void updateUI();
 
@@ -79,6 +85,7 @@ class MainWindow : public QMainWindow
 
 		// Add breakpoint
 		void on_disassemblerList_itemDoubleClicked(QListWidgetItem *item);
+		void paintEvent(QPaintEvent *event) override;
 
 	private:
 		Ui::MainWindow *ui;

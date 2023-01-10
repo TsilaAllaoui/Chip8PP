@@ -4,6 +4,7 @@
 #include <ctime>
 
 #include "cpu.h"
+#include "mainwindow.h"
 
 long Cpu::romFileSize = 0;
 Cpu::STATE Cpu::state = STATE::PAUSED;
@@ -543,7 +544,9 @@ void Cpu::RND_Vx()
 
 void Cpu::DRW_Vx_Vy()
 {
-	// TODO
+	for (int i = 0; i < 256; i++)
+		for (int j = 0; j < 128; j++)
+			MainWindow::img->setPixelColor(i, j, QColor(rand() % 255, rand() % 255, rand() % 255));
 }
 
 void Cpu::SKP_Vx()

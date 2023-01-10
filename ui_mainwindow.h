@@ -77,9 +77,9 @@ public:
     QPushButton *resumePauseButton;
     QPushButton *resetButton;
     QPushButton *stepButton;
-    QFrame *mainFrame;
     QFrame *breakpointsFrame;
     QListWidget *breakpointsList;
+    QLabel *view;
     QMenuBar *menubar;
     QMenu *File;
     QStatusBar *statusbar;
@@ -88,7 +88,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
-        MainWindow->resize(551, 495);
+        MainWindow->resize(553, 493);
         actionOpen_ROM = new QAction(MainWindow);
         actionOpen_ROM->setObjectName(QString::fromUtf8("actionOpen_ROM"));
         centralwidget = new QWidget(MainWindow);
@@ -310,11 +310,6 @@ public:
         stepButton = new QPushButton(centralwidget);
         stepButton->setObjectName(QString::fromUtf8("stepButton"));
         stepButton->setGeometry(QRect(370, 270, 70, 25));
-        mainFrame = new QFrame(centralwidget);
-        mainFrame->setObjectName(QString::fromUtf8("mainFrame"));
-        mainFrame->setGeometry(QRect(10, 10, 256, 128));
-        mainFrame->setFrameShape(QFrame::Box);
-        mainFrame->setFrameShadow(QFrame::Sunken);
         breakpointsFrame = new QFrame(centralwidget);
         breakpointsFrame->setObjectName(QString::fromUtf8("breakpointsFrame"));
         breakpointsFrame->setGeometry(QRect(280, 310, 256, 128));
@@ -323,10 +318,13 @@ public:
         breakpointsList = new QListWidget(breakpointsFrame);
         breakpointsList->setObjectName(QString::fromUtf8("breakpointsList"));
         breakpointsList->setGeometry(QRect(0, 0, 256, 128));
+        view = new QLabel(centralwidget);
+        view->setObjectName(QString::fromUtf8("view"));
+        view->setGeometry(QRect(10, 10, 256, 128));
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
-        menubar->setGeometry(QRect(0, 0, 551, 26));
+        menubar->setGeometry(QRect(0, 0, 553, 26));
         File = new QMenu(menubar);
         File->setObjectName(QString::fromUtf8("File"));
         MainWindow->setMenuBar(menubar);
@@ -391,6 +389,7 @@ public:
         resumePauseButton->setText(QApplication::translate("MainWindow", "PAUSE", nullptr));
         resetButton->setText(QApplication::translate("MainWindow", "RESET", nullptr));
         stepButton->setText(QApplication::translate("MainWindow", "STEP", nullptr));
+        view->setText(QApplication::translate("MainWindow", "TextLabel", nullptr));
         File->setTitle(QApplication::translate("MainWindow", "File", nullptr));
     } // retranslateUi
 

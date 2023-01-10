@@ -3,7 +3,9 @@
 #include "utilities.h"
 
 #include <QFileDialog>
+#include <QPainter>
 
+QImage* MainWindow::img = new QImage;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -59,6 +61,19 @@ MainWindow::MainWindow(QWidget *parent)
 
 	// First update of the UI
 	updateUI();
+
+
+	// GRAPHICS
+
+	img = new QImage(256, 128, QImage::Format::Format_RGB888);
+
+	for (int i = 0; i < 256; i++)
+		for (int j = 0; j < 128; j++)
+			img->setPixelColor(i, j, QColor(255,0,0));
+
+	view = ui->view;
+	pix = QPixmap::fromImage(*img);
+	view->setPixmap(pix);
 }
 
 MainWindow::~MainWindow()
@@ -259,4 +274,10 @@ void MainWindow::on_disassemblerList_itemDoubleClicked(QListWidgetItem *item)
 	// Add to breakpoints and sort
 	breakpointsList->addItem(getAsQStringHex(QStringtoHex(item->text())));
 	breakpointsList->sortItems(Qt::AscendingOrder);
+}
+
+void MainWindow::paintEvent(QPaintEvent * event)
+{
+	pix = QPixmap::fromImage(*img);
+	view->setPixmap(pix);
 }

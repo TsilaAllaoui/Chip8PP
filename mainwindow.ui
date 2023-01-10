@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>551</width>
-    <height>495</height>
+    <width>553</width>
+    <height>493</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -848,22 +848,6 @@
      <string>STEP</string>
     </property>
    </widget>
-   <widget class="QFrame" name="mainFrame">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>10</y>
-      <width>256</width>
-      <height>128</height>
-     </rect>
-    </property>
-    <property name="frameShape">
-     <enum>QFrame::Box</enum>
-    </property>
-    <property name="frameShadow">
-     <enum>QFrame::Sunken</enum>
-    </property>
-   </widget>
    <widget class="QFrame" name="breakpointsFrame">
     <property name="geometry">
      <rect>
@@ -890,13 +874,26 @@
      </property>
     </widget>
    </widget>
+   <widget class="QLabel" name="view">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>256</width>
+      <height>128</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>551</width>
+     <width>553</width>
      <height>26</height>
     </rect>
    </property>
