@@ -8,6 +8,10 @@
 
 QImage MainWindow::img;
 
+#define WIDTH 64
+#define HEIGTH 32
+#define SIZEFACTOR 4
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -66,10 +70,10 @@ MainWindow::MainWindow(QWidget *parent)
 
 	// GRAPHICS
 
-	img = QImage(64*4, 32*4, QImage::Format::Format_RGB888);
+	img = QImage(WIDTH, HEIGTH, QImage::Format::Format_RGB888);
 
-	for (int i = 0; i < 64*4; i++)
-		for (int j = 0; j < 32*4; j++)
+	for (int i = 0; i < WIDTH; i++)
+		for (int j = 0; j < HEIGTH; j++)
 			img.setPixelColor(i, j, QColor(0,0,0));
 
 	view = ui->view;
@@ -277,13 +281,6 @@ void MainWindow::on_disassemblerList_itemDoubleClicked(QListWidgetItem *item)
 
 void MainWindow::paintEvent(QPaintEvent * event)
 {
-	QImage img2 = QImage(256, 128, QImage::Format::Format_RGB888);
-	//img2 = img;
-	for (int i = 0; i < 256; i++)
-		for (int j = 0; j < 128; j++)
-		{
-			img2.setPixelColor(i, j, img.pixelColor(i / 4, j / 4));
-		}
-	pix = pix.fromImage(img2);
+	pix = pix.fromImage(img.scaled(WIDTH * SIZEFACTOR,WIDTH * SIZEFACTOR, Qt::AspectRatioMode::IgnoreAspectRatio));
 	view->setPixmap(pix);
 }

@@ -551,12 +551,6 @@ void Cpu::DRW_Vx_Vy()
 
 	Registers[15] = 0;
 
-	//QImage* tmp = new QImage(64, 32, QImage::Format::Format_RGB888);
-	//QImage* tmp2 = new QImage(64, 32, QImage::Format::Format_RGB888);
-	//for (int i = 0; i < 64*4; i++)
-	//	for (int j = 0; j < 32*4; j++)
-	//		tmp->setPixelColor(i, j, MainWindow::img->pixel(i, j));
-
 	for (int i = 0; i < n; i++)
 	{
 		pixel = RAM[I + i];
@@ -572,14 +566,6 @@ void Cpu::DRW_Vx_Vy()
 		}
 	}
 
-	//MainWindow::img = tmp2;
-
-	//MainWindow::img = &(MainWindow::img->scaled(256,128));
-
-	//for (int i = 0; i < 256; i++)
-	//	for (int j = 0; j < 128; j++)
-	//		MainWindow::img->setPixelColor(i, j, QColor(rand() % 255, rand() % 255, rand() % 255));
-	//MainWindow::img = &(MainWindow::img->scaled(640, 500, Qt::KeepAspectRatio));
 }
 
 void Cpu::SKP_Vx()
