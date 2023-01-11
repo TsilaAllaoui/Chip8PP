@@ -46,10 +46,10 @@
     <ClCompile Include="Source Files\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="utilities.cpp">
+    <ClCompile Include="Source Files\disassembler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="disassembler.cpp">
+    <ClCompile Include="Source Files\utilities.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -84,10 +84,10 @@
     <ClInclude Include="Header Files\cpu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="utilities.h">
+    <ClInclude Include="Header Files\disassembler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="disassembler.h">
+    <ClInclude Include="Header Files\utilities.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

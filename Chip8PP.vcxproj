@@ -137,11 +137,11 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="disassembler.cpp" />
     <ClCompile Include="mainwindow.cpp" />
     <ClCompile Include="Source Files\cpu.cpp" />
+    <ClCompile Include="Source Files\disassembler.cpp" />
     <ClCompile Include="Source Files\main.cpp" />
-    <ClCompile Include="utilities.cpp" />
+    <ClCompile Include="Source Files\utilities.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="mainwindow.h">
@@ -162,8 +162,6 @@
     <ClCompile Include="release\moc_mainwindow.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClInclude Include="disassembler.h" />
-    <ClInclude Include="utilities.h" />
     <CustomBuild Include="debug\moc_predefs.h.cbt">
       <FileType>Document</FileType>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
@@ -181,6 +179,8 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </CustomBuild>
     <ClInclude Include="Header Files\cpu.h" />
+    <ClInclude Include="Header Files\disassembler.h" />
+    <ClInclude Include="Header Files\utilities.h" />
     <ClInclude Include="ui_mainwindow.h" />
   </ItemGroup>
   <ItemGroup>
