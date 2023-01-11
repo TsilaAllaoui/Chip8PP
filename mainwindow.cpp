@@ -147,7 +147,7 @@ void MainWindow::on_stepButton_clicked()
 
 void MainWindow::updateUI()
 {
-	/*// Showing states of the CPU
+	// Showing states of the CPU
 	PC->setText(getAsQStringHex(chip8Cpu->getPC()));
 	SP->setText(getAsQStringHex(chip8Cpu->getSP()));
 	I->setText(getAsQStringHex(chip8Cpu->getI()));
@@ -178,7 +178,7 @@ void MainWindow::updateUI()
 			opcodes->currentItem()->setBackgroundColor(QColor(255, 0, 0));
 		else opcodes->currentItem()->setBackgroundColor(QApplication::palette().color(QPalette::Base));
 	}
-	else opcodes->setCurrentRow(-1);*/
+	else opcodes->setCurrentRow(-1);
 
 	
 }
