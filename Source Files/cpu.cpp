@@ -419,7 +419,6 @@ void Cpu::SE_Vx()
 	int index = (currOpcode & 0x0F00) >> 8;
 	if (Registers[index] == (currOpcode & 0x00FF))
 		PC += 2;
-	//else PC -= 2;
 }
 
 void Cpu::SNE_Vx()
@@ -427,7 +426,6 @@ void Cpu::SNE_Vx()
 	int index = (currOpcode & 0x0F00) >> 8;
 	if (Registers[index] != (currOpcode & 0x00FF))
 		PC += 2;
-	//else PC -= 2;
 }
 
 void Cpu::SE_Vx_Vy()
@@ -436,7 +434,6 @@ void Cpu::SE_Vx_Vy()
 	int y = (currOpcode & 0x00F0) >> 4;
 	if (Registers[x] == Registers[y])
 		PC += 2;
-	else PC -= 2;
 }
 
 void Cpu::LD_Vx()
@@ -448,7 +445,7 @@ void Cpu::LD_Vx()
 void Cpu::ADD_Vx()
 {
 	int x = (currOpcode & 0x0F00) >> 8;
-	Registers[x] += currOpcode & 0x00FF;
+	Registers[x] += (uint8_t)(currOpcode & 0x00FF);
 }
 
 void Cpu::LD_Vx_Vy(int x, int y)
@@ -458,7 +455,7 @@ void Cpu::LD_Vx_Vy(int x, int y)
 
 void Cpu::OR_Vx_Vy(int x, int y)
 {
-	Registers[x] = Registers[y];
+	Registers[x] |= Registers[y];
 }
 
 void Cpu::AND_Vx_Vy(int x, int y)
@@ -523,7 +520,6 @@ void Cpu::SNE_Vx_Vy()
 	int y = (currOpcode & 0x00F0) >> 4;
 	if (Registers[x] != Registers[y])
 		PC += 2;
-	else PC -= 2;
 }
 
 void Cpu::LD_I()
@@ -558,10 +554,12 @@ void Cpu::DRW_Vx_Vy()
 		{
 			if ((pixel & (0x80 >> j)) != 0)
 			{
-				/*if (tmp->pixel(x + j, y + i) == qRgb(255,255,255))
-					Registers[15] = 1;*/
-
-					MainWindow::img.setPixelColor(x  + j, y + i, QColor(255,255,255));
+				if (MainWindow::img.pixelColor(x + j, y + i) == QColor(255, 255, 255))
+				{
+					Registers[15] = 1;
+					MainWindow::img.setPixelColor(x  + j, y + i, QColor(0,0,0));
+				}
+				else MainWindow::img.setPixelColor(x + j, y + i, QColor(255, 255, 255));
 			}
 		}
 	}

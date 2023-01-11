@@ -71,10 +71,7 @@ MainWindow::MainWindow(QWidget *parent)
 	// GRAPHICS
 
 	img = QImage(WIDTH, HEIGTH, QImage::Format::Format_RGB888);
-
-	for (int i = 0; i < WIDTH; i++)
-		for (int j = 0; j < HEIGTH; j++)
-			img.setPixelColor(i, j, QColor(0,0,0));
+	img.fill(QColor(0, 0, 0));
 
 	view = ui->view;
 }
@@ -122,6 +119,9 @@ void MainWindow::on_resetButton_clicked()
 
 		// Reset the CPU
 		chip8Cpu->reset();
+
+		// Clearing screen
+		img.fill(QColor(0,0,0));
 
 		// Update the UI
 		updateUI();
