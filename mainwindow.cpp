@@ -2,9 +2,14 @@
 #include "mainwindow.h"
 #include "utilities.h"
 
-#include <QFileDialog>
-#include <QPainter>
 #include <QGraphicsScene>
+#include <QFileDialog>
+#include <QKeyEvent>
+#include <algorithm>
+#include <QPainter>
+#include <fstream>
+#include <vector>
+#include <string>
 
 QImage MainWindow::img;
 
@@ -74,6 +79,9 @@ MainWindow::MainWindow(QWidget *parent)
 	img.fill(QColor(0, 0, 0));
 
 	view = ui->view;
+
+	// Setting up focus of window for key event
+	this->setFocusPolicy(Qt::StrongFocus);
 }
 
 MainWindow::~MainWindow()
@@ -162,14 +170,11 @@ void MainWindow::updateUI()
 	if (state != STATE::STOPPED)
 	{
 		auto mnemonics = chip8Cpu->getMnemonics();
-		for (int i = 0; i < mnemonics.size(); i++)
+		if (!mnemonics[chip8Cpu->getPC()].empty())
 		{
-			if (mnemonics[i].find(getAsQStringHex(chip8Cpu->getPC()).toStdString()) != mnemonics[i].npos)
-			{
-				opcodes->setCurrentRow(i);
-				opcodes->currentItem()->setBackgroundColor(QColor(0, 0, 255));
-				break;
-			}
+			auto t = mnemonicsIndexes[mnemonics[chip8Cpu->getPC()]];
+			opcodes->setCurrentRow(t);
+			opcodes->currentItem()->setBackgroundColor(QColor(0, 0, 255));
 		}
 
 		// for the color of the current index
@@ -178,9 +183,8 @@ void MainWindow::updateUI()
 			opcodes->currentItem()->setBackgroundColor(QColor(255, 0, 0));
 		else opcodes->currentItem()->setBackgroundColor(QApplication::palette().color(QPalette::Base));
 	}
-	else opcodes->setCurrentRow(-1);
 
-	
+	else opcodes->setCurrentRow(-1);
 }
 
 void MainWindow::update()
@@ -209,6 +213,7 @@ void MainWindow::update()
 
 	// Update the UI
 	updateUI();
+
 }
 
 void MainWindow::emulate()
@@ -222,8 +227,8 @@ void MainWindow::emulate()
 void MainWindow::on_actionOpen_ROM_triggered()
 {
 	// Getting the Rom file
-	QString file = QFileDialog::getOpenFileName(nullptr, QString(""), QString("./"), QString("Chip8 ROM (*.ch8 * .c8)"));
-
+	//QString file = QFileDialog::getOpenFileName(nullptr, QString(""), QString("./"), QString("Chip8 ROM (*.ch8 * .c8)"));
+	QString file = "C:/Users/735/Desktop/Chip8PP/chip8-test-suite.ch8";
 	// Loading Rom file
 	if (file != QString(""))
 	{
@@ -234,9 +239,13 @@ void MainWindow::on_actionOpen_ROM_triggered()
 		chip8Cpu->loadRom(file.toStdString());
 
 		// Loading disassembler opcodes
+		mnemonicsIndexes.clear();
 		auto mnemonics = chip8Cpu->getMnemonics();
-		for (long i = 0; i < mnemonics.size(); i++)
-			opcodes->addItem(QString(mnemonics[i].c_str()));
+		for (auto& i : mnemonics)
+		{
+			opcodes->addItem(QString(i.second.c_str()));
+			mnemonicsIndexes[i.second] = mnemonicsIndexes.size();
+		}
 
 		// Setting states
 		Cpu::state = Cpu::STATE::RUNNING;
@@ -283,4 +292,27 @@ void MainWindow::paintEvent(QPaintEvent * event)
 {
 	pix = pix.fromImage(img.scaled(WIDTH * SIZEFACTOR,WIDTH * SIZEFACTOR));
 	view->setPixmap(pix);
+}
+
+void MainWindow::keyPressEvent(QKeyEvent *event)
+{
+	std::bitset<16> keys;
+	if (event->key() == Qt::Key_0) keys[0] = 1;// else keys[0] = 0; 
+	if (event->key() == Qt::Key_1) keys[1] = 1;// else keys[1] = 0;
+	if (event->key() == Qt::Key_2) keys[2] = 1;// else keys[2] = 0;
+	if (event->key() == Qt::Key_3) keys[3] = 1;// else keys[3] = 0;
+	if (event->key() == Qt::Key_4) keys[4] = 1;// else keys[4] = 0;
+	if (event->key() == Qt::Key_5) keys[5] = 1;// else keys[5] = 0;
+	if (event->key() == Qt::Key_6) keys[6] = 1;// else keys[6] = 0;
+	if (event->key() == Qt::Key_7) keys[7] = 1;// else keys[7] = 0;
+	if (event->key() == Qt::Key_8) keys[8] = 1;// else keys[8] = 0;
+	if (event->key() == Qt::Key_9) keys[9] = 1;// else keys[9] = 0;
+	if (event->key() == Qt::Key_A) keys[0xA] = 1;// else keys[0xA] = 0;
+	if (event->key() == Qt::Key_B) keys[0xB] = 1;// else keys[0xB] = 0;
+	if (event->key() == Qt::Key_C) keys[0xC] = 1;// else keys[0xC] = 0;
+	if (event->key() == Qt::Key_D) keys[0xD] = 1;// else keys[0xD] = 0;
+	if (event->key() == Qt::Key_E) keys[0xE] = 1;// else keys[0xE] = 0;
+	if (event->key() == Qt::Key_F) keys[0xF] = 1;// else keys[0xF] = 0;
+
+	chip8Cpu->setKeys(keys);
 }

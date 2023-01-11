@@ -24,10 +24,7 @@ Cpu::Cpu()
 
 	// Init all registers to 0 and all keys to false
 	for (int i = 0; i < 16; i++)
-	{
 		Registers[i] = 0;
-		keys[i] = false;
-	}
 
 	// Filling memory with 0
 	for (int i = 0; i < 0x1000; i++)
@@ -107,9 +104,9 @@ std::uint8_t* Cpu::getRegisters()
 	return Registers;
 }
 
-std::vector<std::string> Cpu::getMnemonics()
+std::map<uint16_t, std::string> Cpu::getMnemonics()
 {
-	return disassembler->mnemonics;
+	return disassembler->mnemonicsMap;
 }
 
 void Cpu::loadRom(std::string filePath)
@@ -168,10 +165,7 @@ void Cpu::reset()
 
 	// Init all registers to 0 and all keys to false
 	for (int i = 0; i < 16; i++)
-	{
 		Registers[i] = 0;
-		keys[i] = false;
-	}
 
 	// Filling memory with 0
 	for (int i = 0; i < 0x200; i++)
@@ -383,12 +377,20 @@ void Cpu::decodeAndExecute()
 	}
 }
 
+void Cpu::setKeys(std::bitset<16> value)
+{
+	keys = value;
+}
+
+std::bitset<16> Cpu::getKeys()
+{
+	return keys;
+}
+
 void Cpu::CLS()
 {
 	// Zeroing all values in the buffer
-	for (int i = 0; i < 64; i++)
-		for (int j = 0; j < 32; j++)
-			screenBuffer[i][j] = 0;
+	MainWindow::img.fill(QColor(0,0,0));
 }
 
 void Cpu::RET()
@@ -569,9 +571,9 @@ void Cpu::DRW_Vx_Vy()
 void Cpu::SKP_Vx()
 {
 	uint8_t x = (currOpcode & 0x0F00) >> 8;
-	if (keys[Registers[x]])
+	if (keys[Registers[x]] == 1)
 	{
-		keys[Registers[x]] = false;
+		keys[Registers[x]] = 0;
 		PC += 2;
 	}
 }
@@ -579,9 +581,10 @@ void Cpu::SKP_Vx()
 void Cpu::SKNP_Vx()
 {
 	uint8_t x = (currOpcode & 0x0F00) >> 8;
-	if (!keys[Registers[x]])
+	keys = std::bitset<16>().set();
+	if (keys[Registers[x]] == 1)
 	{
-		keys[Registers[x]] = false;
+		keys[Registers[x]] = 0;
 		PC += 2;
 	}
 }

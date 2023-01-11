@@ -2,6 +2,7 @@
 
 #include <vector>
 #include "disassembler.h"
+#include <bitset>
 
 // The CPU class of the Chip8
 class Cpu
@@ -29,7 +30,7 @@ class Cpu
 	    uint8_t DT, ST;
 
 		// For the keys inputs
-	    bool keys[16];
+	    std::bitset<16> keys;
 
 		// Buffer of the display
 	    uint8_t screenBuffer[64][32];
@@ -64,7 +65,7 @@ class Cpu
 		uint16_t getDT();
 		uint16_t getST();
 		uint8_t* getRegisters();
-		std::vector<std::string> getMnemonics();
+		std::map<uint16_t, std::string> getMnemonics();
 
 		// Start the CPU
 	    void run();
@@ -86,6 +87,12 @@ class Cpu
 
 		// Update timers
 		void updateTimers();
+
+		// Set keys states
+		void setKeys(std::bitset<16> value);
+
+		// Get keys states
+		std::bitset<16> getKeys();
 
 		// CLS instruction
 		void CLS();

@@ -23,6 +23,7 @@ Chip8Disassembler::~Chip8Disassembler()
 
 void Chip8Disassembler::disassemble()
 {
+	std::vector<std::string> mnemonics;
 	auto stohex = [](uint16_t val, std::string prefix = "#") -> std::string
 	{
 		std::stringstream ss;
@@ -165,6 +166,7 @@ void Chip8Disassembler::disassemble()
 	for (auto &i : mnemonics)
 	{
 		i = stohex(pc, "0x") + "  " + i;
+		mnemonicsMap[pc] = i;
 		pc += 2;
 	}
 }

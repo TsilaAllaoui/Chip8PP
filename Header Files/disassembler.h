@@ -1,6 +1,7 @@
 #pragma once
 
-#include <unordered_map>
+#include <vector>
+#include <map>
 
 // Chip8 disassembler class
 class Chip8Disassembler
@@ -18,5 +19,5 @@ class Chip8Disassembler
 		void disassemble();
 
 		// The match of the WORDs to mnemonics 
-		std::vector<std::string> mnemonics;
+		std::map<uint16_t, std::string> mnemonicsMap;
 };

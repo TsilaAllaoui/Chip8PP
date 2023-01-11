@@ -86,7 +86,12 @@ class MainWindow : public QMainWindow
 
 		// Add breakpoint
 		void on_disassemblerList_itemDoubleClicked(QListWidgetItem *item);
+
+		// For rendering
 		void paintEvent(QPaintEvent *event) override;
+		
+		// For key presses
+		void keyPressEvent(QKeyEvent *event) override;
 
 	private:
 		Ui::MainWindow *ui;
@@ -96,5 +101,8 @@ class MainWindow : public QMainWindow
 	
 		// The current state of the Chip8 eumlator
 		bool running;
+
+		//Mnemonics vector
+		std::unordered_map<std::string, int> mnemonicsIndexes;
 };
 #endif // MAINWINDOW_H
