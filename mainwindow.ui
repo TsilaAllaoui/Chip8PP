@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>564</width>
-    <height>545</height>
+    <height>569</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -866,7 +866,7 @@
      <rect>
       <x>280</x>
       <y>340</y>
-      <width>256</width>
+      <width>128</width>
       <height>141</height>
      </rect>
     </property>
@@ -881,7 +881,7 @@
       <rect>
        <x>0</x>
        <y>0</y>
-       <width>256</width>
+       <width>128</width>
        <height>141</height>
       </rect>
      </property>
@@ -1177,6 +1177,45 @@
     </property>
     <property name="text">
      <string>Keys:</string>
+    </property>
+   </widget>
+   <widget class="QFrame" name="stackFrame">
+    <property name="geometry">
+     <rect>
+      <x>420</x>
+      <y>340</y>
+      <width>128</width>
+      <height>141</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Sunken</enum>
+    </property>
+    <widget class="QListWidget" name="stackList">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>128</width>
+       <height>141</height>
+      </rect>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QLabel" name="stackLabel">
+    <property name="geometry">
+     <rect>
+      <x>420</x>
+      <y>320</y>
+      <width>71</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Stack:</string>
     </property>
    </widget>
   </widget>

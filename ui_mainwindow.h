@@ -102,6 +102,9 @@ public:
     QPushButton *KeyB;
     QPushButton *KeyF;
     QLabel *Keys;
+    QFrame *stackFrame;
+    QListWidget *stackList;
+    QLabel *stackLabel;
     QMenuBar *menubar;
     QMenu *File;
     QStatusBar *statusbar;
@@ -110,7 +113,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
-        MainWindow->resize(564, 545);
+        MainWindow->resize(564, 569);
         actionOpen_ROM = new QAction(MainWindow);
         actionOpen_ROM->setObjectName(QString::fromUtf8("actionOpen_ROM"));
         centralwidget = new QWidget(MainWindow);
@@ -337,12 +340,12 @@ public:
         stepButton->setGeometry(QRect(370, 290, 70, 25));
         breakpointsFrame = new QFrame(centralwidget);
         breakpointsFrame->setObjectName(QString::fromUtf8("breakpointsFrame"));
-        breakpointsFrame->setGeometry(QRect(280, 340, 256, 141));
+        breakpointsFrame->setGeometry(QRect(280, 340, 128, 141));
         breakpointsFrame->setFrameShape(QFrame::StyledPanel);
         breakpointsFrame->setFrameShadow(QFrame::Sunken);
         breakpointsList = new QListWidget(breakpointsFrame);
         breakpointsList->setObjectName(QString::fromUtf8("breakpointsList"));
-        breakpointsList->setGeometry(QRect(0, 0, 256, 141));
+        breakpointsList->setGeometry(QRect(0, 0, 128, 141));
         view = new QLabel(centralwidget);
         view->setObjectName(QString::fromUtf8("view"));
         view->setGeometry(QRect(10, 20, 256, 128));
@@ -412,6 +415,17 @@ public:
         Keys = new QLabel(centralwidget);
         Keys->setObjectName(QString::fromUtf8("Keys"));
         Keys->setGeometry(QRect(20, 330, 55, 16));
+        stackFrame = new QFrame(centralwidget);
+        stackFrame->setObjectName(QString::fromUtf8("stackFrame"));
+        stackFrame->setGeometry(QRect(420, 340, 128, 141));
+        stackFrame->setFrameShape(QFrame::StyledPanel);
+        stackFrame->setFrameShadow(QFrame::Sunken);
+        stackList = new QListWidget(stackFrame);
+        stackList->setObjectName(QString::fromUtf8("stackList"));
+        stackList->setGeometry(QRect(0, 0, 128, 141));
+        stackLabel = new QLabel(centralwidget);
+        stackLabel->setObjectName(QString::fromUtf8("stackLabel"));
+        stackLabel->setGeometry(QRect(420, 320, 71, 16));
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
@@ -502,6 +516,7 @@ public:
         KeyB->setText(QApplication::translate("MainWindow", "B", nullptr));
         KeyF->setText(QApplication::translate("MainWindow", "F", nullptr));
         Keys->setText(QApplication::translate("MainWindow", "Keys:", nullptr));
+        stackLabel->setText(QApplication::translate("MainWindow", "Stack:", nullptr));
         File->setTitle(QApplication::translate("MainWindow", "File", nullptr));
     } // retranslateUi
 

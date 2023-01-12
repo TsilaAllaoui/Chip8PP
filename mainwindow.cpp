@@ -166,6 +166,14 @@ void MainWindow::updateUI()
 	for (int i = 0; i < 16; i++)
 		Registers[i]->setText(getAsQStringHex(r[i]));
 
+	// Upfating stack
+	auto stackList = chip8Cpu->getStack();
+	ui->stackList->clear();
+	for (auto &i : stackList)
+	{
+		ui->stackList->addItem(getAsQStringHex(i));
+	}
+
 	// Set current opcode as the current opcode pointed by PC
 	if (state != STATE::STOPPED)
 	{
@@ -173,7 +181,7 @@ void MainWindow::updateUI()
 		if (!mnemonics[chip8Cpu->getPC()].empty())
 		{
 			auto t = mnemonicsIndexes[mnemonics[chip8Cpu->getPC()]];
-			opcodes->setCurrentRow(t);
+		 	opcodes->setCurrentRow(t);
 			opcodes->currentItem()->setBackgroundColor(QColor(0, 0, 255));
 		}
 
@@ -185,6 +193,7 @@ void MainWindow::updateUI()
 	}
 
 	else opcodes->setCurrentRow(-1);
+
 }
 
 void MainWindow::update()
@@ -202,7 +211,7 @@ void MainWindow::update()
 
 		//opcodes->currentItem()->setBackgroundColor(QApplication::palette().color(QPalette::Base));
 
-		updateUI();
+		//updateUI();
 	}
 
 	//If the CPU is running, fo a CPU step
@@ -212,7 +221,7 @@ void MainWindow::update()
 	}
 
 	// Update the UI
-	updateUI();
+	//updateUI();
 
 }
 
@@ -227,8 +236,8 @@ void MainWindow::emulate()
 void MainWindow::on_actionOpen_ROM_triggered()
 {
 	// Getting the Rom file
-	//QString file = QFileDialog::getOpenFileName(nullptr, QString(""), QString("./"), QString("Chip8 ROM (*.ch8 * .c8)"));
-	QString file = "C:/Users/735/Desktop/Chip8PP/chip8-test-suite.ch8";
+	QString file = QFileDialog::getOpenFileName(nullptr, QString(""), QString("./Roms/"), QString("Chip8 ROM (*.ch8 * .c8)"));
+	//QString file = "C:/Users/735/Desktop/Chip8PP/chip8-test-suite.ch8";
 	// Loading Rom file
 	if (file != QString(""))
 	{
@@ -297,22 +306,182 @@ void MainWindow::paintEvent(QPaintEvent * event)
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {
 	std::bitset<16> keys;
-	if (event->key() == Qt::Key_0) keys[0] = 1;// else keys[0] = 0; 
-	if (event->key() == Qt::Key_1) keys[1] = 1;// else keys[1] = 0;
-	if (event->key() == Qt::Key_2) keys[2] = 1;// else keys[2] = 0;
-	if (event->key() == Qt::Key_3) keys[3] = 1;// else keys[3] = 0;
-	if (event->key() == Qt::Key_4) keys[4] = 1;// else keys[4] = 0;
-	if (event->key() == Qt::Key_5) keys[5] = 1;// else keys[5] = 0;
-	if (event->key() == Qt::Key_6) keys[6] = 1;// else keys[6] = 0;
-	if (event->key() == Qt::Key_7) keys[7] = 1;// else keys[7] = 0;
-	if (event->key() == Qt::Key_8) keys[8] = 1;// else keys[8] = 0;
-	if (event->key() == Qt::Key_9) keys[9] = 1;// else keys[9] = 0;
-	if (event->key() == Qt::Key_A) keys[0xA] = 1;// else keys[0xA] = 0;
-	if (event->key() == Qt::Key_B) keys[0xB] = 1;// else keys[0xB] = 0;
-	if (event->key() == Qt::Key_C) keys[0xC] = 1;// else keys[0xC] = 0;
-	if (event->key() == Qt::Key_D) keys[0xD] = 1;// else keys[0xD] = 0;
-	if (event->key() == Qt::Key_E) keys[0xE] = 1;// else keys[0xE] = 0;
-	if (event->key() == Qt::Key_F) keys[0xF] = 1;// else keys[0xF] = 0;
+	if (event->key() == Qt::Key_0) keys[0] = 1; else keys[0] = 0; 
+	if (event->key() == Qt::Key_1) keys[1] = 1; else keys[1] = 0;
+	if (event->key() == Qt::Key_2) keys[2] = 1; else keys[2] = 0;
+	if (event->key() == Qt::Key_3) keys[3] = 1; else keys[3] = 0;
+	if (event->key() == Qt::Key_4) keys[4] = 1; else keys[4] = 0;
+	if (event->key() == Qt::Key_5) keys[5] = 1; else keys[5] = 0;
+	if (event->key() == Qt::Key_6) keys[6] = 1; else keys[6] = 0;
+	if (event->key() == Qt::Key_7) keys[7] = 1; else keys[7] = 0;
+	if (event->key() == Qt::Key_8) keys[8] = 1; else keys[8] = 0;
+	if (event->key() == Qt::Key_9) keys[9] = 1; else keys[9] = 0;
+	if (event->key() == Qt::Key_A) keys[0xA] = 1; else keys[0xA] = 0;
+	if (event->key() == Qt::Key_B) keys[0xB] = 1; else keys[0xB] = 0;
+	if (event->key() == Qt::Key_C) keys[0xC] = 1; else keys[0xC] = 0;
+	if (event->key() == Qt::Key_D) keys[0xD] = 1; else keys[0xD] = 0;
+	if (event->key() == Qt::Key_E) keys[0xE] = 1; else keys[0xE] = 0;
+	if (event->key() == Qt::Key_F) keys[0xF] = 1; else keys[0xF] = 0;
 
 	chip8Cpu->setKeys(keys);
+}
+
+void MainWindow::on_Key0_pressed()
+{
+	chip8Cpu->setKey(0, 1);
+}
+
+void MainWindow::on_Key0_released()
+{
+	chip8Cpu->setKey(0, 0);
+}
+
+void MainWindow::on_Key1_pressed()
+{
+	chip8Cpu->setKey(1, 1);
+}
+
+void MainWindow::on_Key1_released()
+{
+	chip8Cpu->setKey(1, 0);
+}
+
+void MainWindow::on_Key2_pressed()
+{
+	chip8Cpu->setKey(2, 1);
+}
+
+void MainWindow::on_Key2_released()
+{
+	chip8Cpu->setKey(2, 0);
+}
+
+void MainWindow::on_Key3_pressed()
+{
+	chip8Cpu->setKey(3, 1);
+}
+
+void MainWindow::on_Key3_released()
+{
+	chip8Cpu->setKey(3, 0);
+}
+
+void MainWindow::on_Key4_pressed()
+{
+	chip8Cpu->setKey(4, 1);
+}
+
+void MainWindow::on_Key4_released()
+{
+	chip8Cpu->setKey(4, 0);
+}
+
+void MainWindow::on_Key5_pressed()
+{
+	chip8Cpu->setKey(5, 1);
+}
+
+void MainWindow::on_Key5_released()
+{
+	chip8Cpu->setKey(5, 0);
+}
+
+void MainWindow::on_Key6_pressed()
+{
+	chip8Cpu->setKey(6, 1);
+}
+
+void MainWindow::on_Key6_released()
+{
+	chip8Cpu->setKey(6, 0);
+}
+
+void MainWindow::on_Key7_pressed()
+{
+	chip8Cpu->setKey(7, 1);
+}
+
+void MainWindow::on_Key7_released()
+{
+	chip8Cpu->setKey(7, 0);
+}
+
+void MainWindow::on_Key8_pressed()
+{
+	chip8Cpu->setKey(8, 1);
+}
+
+void MainWindow::on_Key8_released()
+{
+	chip8Cpu->setKey(8, 0);
+}
+
+void MainWindow::on_Key9_pressed()
+{
+	chip8Cpu->setKey(9, 1);
+}
+
+void MainWindow::on_Key9_released()
+{
+	chip8Cpu->setKey(9, 0);
+}
+
+void MainWindow::on_KeyA_pressed()
+{
+	chip8Cpu->setKey(0xA, 1);
+}
+
+void MainWindow::on_KeyA_released()
+{
+	chip8Cpu->setKey(0xA, 0);
+}
+
+void MainWindow::on_KeyB_pressed()
+{
+	chip8Cpu->setKey(0xB, 1);
+}
+
+void MainWindow::on_KeyB_released()
+{
+	chip8Cpu->setKey(0xB, 0);
+}
+
+void MainWindow::on_KeyC_pressed()
+{
+	chip8Cpu->setKey(0xC, 1);
+}
+
+void MainWindow::on_KeyC_released()
+{
+	chip8Cpu->setKey(0xC, 0);
+}
+
+void MainWindow::on_KeyD_pressed()
+{
+	chip8Cpu->setKey(0xD, 1);
+}
+
+void MainWindow::on_KeyD_released()
+{
+	chip8Cpu->setKey(0xD, 0);
+}
+
+void MainWindow::on_KeyE_pressed()
+{
+	chip8Cpu->setKey(0xE, 1);
+}
+
+void MainWindow::on_KeyE_released()
+{
+	chip8Cpu->setKey(0xE, 0);
+}
+
+void MainWindow::on_KeyF_pressed()
+{
+	chip8Cpu->setKey(0xF, 1);
+}
+
+void MainWindow::on_KeyF_released()
+{
+	chip8Cpu->setKey(0xF, 0);
 }

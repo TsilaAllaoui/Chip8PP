@@ -66,6 +66,7 @@ class Cpu
 		uint16_t getST();
 		uint8_t* getRegisters();
 		std::map<uint16_t, std::string> getMnemonics();
+		std::vector<uint16_t> getStack();
 
 		// Start the CPU
 	    void run();
@@ -90,6 +91,7 @@ class Cpu
 
 		// Set keys states
 		void setKeys(std::bitset<16> value);
+		void setKey(int i, int value);
 
 		// Get keys states
 		std::bitset<16> getKeys();

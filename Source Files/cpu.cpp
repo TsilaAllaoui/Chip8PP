@@ -109,6 +109,11 @@ std::map<uint16_t, std::string> Cpu::getMnemonics()
 	return disassembler->mnemonicsMap;
 }
 
+std::vector<uint16_t> Cpu::getStack()
+{
+	return Stack;
+}
+
 void Cpu::loadRom(std::string filePath)
 {
 	// Opening file
@@ -208,6 +213,9 @@ void Cpu::reset()
 
 	// Setting current opcode to the first word in memory
 	currOpcode = RAM[PC];
+
+	// Clearing stack
+	Stack.clear();
 }
 
 void Cpu::updateTimers()
@@ -382,6 +390,11 @@ void Cpu::setKeys(std::bitset<16> value)
 	keys = value;
 }
 
+void Cpu::setKey(int i, int value)
+{
+	keys[i] = value;
+}
+
 std::bitset<16> Cpu::getKeys()
 {
 	return keys;
@@ -401,6 +414,7 @@ void Cpu::RET()
 	else PC = Stack[0];
 	// Decreasing SP
 	SP--;
+	Stack.pop_back();
 }
 
 void Cpu::JMP()
@@ -411,7 +425,7 @@ void Cpu::JMP()
 
 void Cpu::CALL()
 {
-	Stack.emplace_back(PC);
+	Stack.emplace_back(PC - 2);
 	SP++;
 	PC = currOpcode & 0x0FFF;
 }
@@ -572,21 +586,14 @@ void Cpu::SKP_Vx()
 {
 	uint8_t x = (currOpcode & 0x0F00) >> 8;
 	if (keys[Registers[x]] == 1)
-	{
-		keys[Registers[x]] = 0;
 		PC += 2;
-	}
 }
 
 void Cpu::SKNP_Vx()
 {
 	uint8_t x = (currOpcode & 0x0F00) >> 8;
-	keys = std::bitset<16>().set();
-	if (keys[Registers[x]] == 1)
-	{
-		keys[Registers[x]] = 0;
+	if (keys[Registers[x]] == 0)
 		PC += 2;
-	}
 }
 
 void Cpu::LD_Vx_DT()

@@ -8,6 +8,7 @@
 #include <QPropertyAnimation>
 #include <QGraphicsView>
 #include "cpu.h"
+#include <QKeyEvent>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -92,6 +93,43 @@ class MainWindow : public QMainWindow
 		
 		// For key presses
 		void keyPressEvent(QKeyEvent *event) override;
+
+		// For all keys pushButton event
+		void on_Key0_pressed();
+		void on_Key1_pressed();
+		void on_Key2_pressed();
+		void on_Key3_pressed();
+		void on_Key4_pressed();
+		void on_Key5_pressed();
+		void on_Key6_pressed();
+		void on_Key7_pressed();
+		void on_Key8_pressed();
+		void on_Key9_pressed();
+		void on_KeyA_pressed();
+		void on_KeyB_pressed();
+		void on_KeyC_pressed();
+		void on_KeyD_pressed();
+		void on_KeyE_pressed();
+		void on_KeyF_pressed();
+
+		void on_Key0_released();
+		void on_Key1_released();
+		void on_Key2_released();
+		void on_Key3_released();
+		void on_Key4_released();
+		void on_Key5_released();
+		void on_Key6_released();
+		void on_Key7_released();
+		void on_Key8_released();
+		void on_Key9_released();
+		void on_KeyA_released();
+		void on_KeyB_released();
+		void on_KeyC_released();
+		void on_KeyD_released();
+		void on_KeyE_released();
+		void on_KeyF_released();
+
+
 
 	private:
 		Ui::MainWindow *ui;
